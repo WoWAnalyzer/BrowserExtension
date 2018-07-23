@@ -28,10 +28,6 @@ var getMessage = (code, type) => {
       <br/>
       You can navigate to WoWAnalyzer by pressing the Analyze button.
     `;
-  } else {
-    return `
-      ${type}
-    `;
   }
 }
 
