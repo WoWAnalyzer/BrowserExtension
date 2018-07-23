@@ -1,7 +1,38 @@
 import ext from "./utils/ext";
+import PARSE_TYPES from './PARSE_TYPES';
 
-var getUrl = (code) => {
-  return `https://wowanalyzer.com/report/${code}`;
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+var getUrl = (code, type) => {
+  if (type === PARSE_TYPES.REPORT) {
+    return `https://wowanalyzer.com/report/${code}`;
+  } else if (type === PARSE_TYPES.CHARACTER) {
+    return `https://wowanalyzer.com/character/${code.region.toUpperCase()}/${toTitleCase(code.realm)}/${toTitleCase(code.name)}/`;
+  }
+}
+
+var getMessage = (code, type) => {
+  if (type === PARSE_TYPES.REPORT) {
+    return `
+      Report code is: <code>${code}</code>.
+      <br/>
+      You can navigate to WoWAnalyzer by pressing the Analyze button.
+    `;
+  } else if (type === PARSE_TYPES.CHARACTER) {
+    return `
+      Character is: <code>${toTitleCase(decodeURIComponent(code.realm))} - ${toTitleCase(decodeURIComponent(code.name))}</code>.
+      <br/>
+      You can navigate to WoWAnalyzer by pressing the Analyze button.
+    `;
+  } else {
+    return `
+      ${type}
+    `;
+  }
 }
 
 var template = (data) => {
@@ -9,13 +40,11 @@ var template = (data) => {
   <div class="site-description">
     <h3 class="title">This log can be analyzed!</h3>
     <p className="description">
-      Report code is: <code>${data.code}</code>.
-      <br/>
-      You can navigate to WoWAnalyzer by pressing the Analyze button.
+      ${getMessage(data.code, data.type)}
     </p>
   </div>
   <div class="action-container">
-    <a href=${getUrl(data.code)} target="_blank" class="btn btn-primary">Analyze</a>
+    <a href=${getUrl(data.code, data.type)} target="_blank" class="btn btn-primary">Analyze</a>
   </div>
   `);
 }
