@@ -38,7 +38,7 @@ var getMessage = (code, type) => {
 var template = (data) => {
   return (`
   <div class="site-description">
-    <h3 class="title">This log can be analyzed!</h3>
+    <h3 class="title">This ${data.type === PARSE_TYPES.REPORT ? 'log' : 'character'} can be analyzed!</h3>
     <p className="description">
       ${getMessage(data.code, data.type)}
     </p>
