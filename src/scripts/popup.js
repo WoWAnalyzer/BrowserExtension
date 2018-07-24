@@ -2,7 +2,6 @@ import ext from "./utils/ext";
 import PARSE_TYPES from './PARSE_TYPES';
 
 var getUrl = (code, type) => {
-  console.log("renderBookmark");
   if (type === PARSE_TYPES.REPORT) {
     return `https://wowanalyzer.com/report/${code}`;
   } else if (type === PARSE_TYPES.CHARACTER) {
