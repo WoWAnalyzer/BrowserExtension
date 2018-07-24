@@ -1,21 +1,39 @@
 import ext from "./utils/ext";
+import PARSE_TYPES from './PARSE_TYPES';
 
-var getUrl = (code) => {
-  return `https://wowanalyzer.com/report/${code}`;
+var getUrl = (code, type) => {
+  if (type === PARSE_TYPES.REPORT) {
+    return `https://wowanalyzer.com/report/${code}`;
+  } else if (type === PARSE_TYPES.CHARACTER) {
+    return `https://wowanalyzer.com/character/${code.region.toUpperCase()}/${code.realm}/${code.name}/`;
+  }
 }
 
-var template = (data) => {
+var getDisplayCode = (code, type) => {
+  if (type === PARSE_TYPES.REPORT) {
+    return `
+      <code>${code}</code>
+    `;
+  } else if (type === PARSE_TYPES.CHARACTER) {
+    return `
+      <code>${decodeURIComponent(code.name)}<br/>${code.region.toUpperCase()} - ${decodeURIComponent(code.realm)}</code>
+    `;
+  }
+}
+
+var template = (code, type) => {
   return (`
   <div class="site-description">
-    <h3 class="title">This log can be analyzed!</h3>
+    <h3 class="title">This ${type === PARSE_TYPES.REPORT ? 'log' : 'character'} can be analyzed!</h3>
     <p className="description">
-      Report code is: <code>${data.code}</code>.
-      <br/>
-      You can navigate to WoWAnalyzer by pressing the Analyze button.
+      ${getDisplayCode(code, type)}
+      <span class="tip">
+        You can navigate to WoWAnalyzer by pressing the Analyze button.
+      </span>
     </p>
   </div>
   <div class="action-container">
-    <a href=${getUrl(data.code)} target="_blank" class="btn btn-primary">Analyze</a>
+    <a href=${getUrl(code, type)} target="_blank" class="btn btn-primary">Analyze</a>
   </div>
   `);
 }
@@ -26,11 +44,11 @@ var renderMessage = (message) => {
 
 var renderBookmark = (data) => {
   var displayContainer = document.getElementById("display-container")
-  if(data) {
-    var tmpl = template(data);
+  if(data.type !== PARSE_TYPES.NONE) {
+    var tmpl = template(data.code, data.type);
     displayContainer.innerHTML = tmpl;  
   } else {
-    renderMessage("Sorry, could not extract the report code.")
+    renderMessage("Sorry, couldn't find a report code or character name.")
   }
 }
 

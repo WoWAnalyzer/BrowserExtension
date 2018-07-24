@@ -5,11 +5,17 @@
 body, html {
   padding: 0;
   margin: 0;
+  height: 100%;
 }
 
 #app {
   padding: 20px 20px;
   background: $white;
+
+  img {
+    height: 42px;
+    margin: 0 auto 12px;
+  }
 }
 
 .popup-content {
@@ -21,15 +27,18 @@ body, html {
 .app-name {
   font-size: 14px;
   text-transform: uppercase;
-  color: $text-secondary;
+  color: $black;
   text-align: center;
   margin: 0 auto 1em auto;
   padding: 0;
 }
 
+.title {
+  text-align: center;
+}
+
 .site-description {
   padding: 0.5em;
-  border: 1px solid $gray;
   margin: 0;
 
   h3 {
@@ -46,30 +55,45 @@ body, html {
     line-height: 1.2;
   }
 
-  code {
-    background: $gray;
-    color: $brand-primary;
-    border-radius: 5px;
-    padding: 0 .5em;
+  .tip {
+    margin-top: 1.3em;
+    display: block;
+    font-size: .9em;
+    color: $text-tip;
   }
+}
+
+p.message, code {
+  background: $gray;
+  color: $brand-primary;
+  border-radius: 5px;
+  padding: 0 .5em;
+  display: block;
+  text-align: center;
+  font-size: 1.3em;
+  border: 1px solid $text-secondary;
+  font-family: $font-family-base;
 }
 
 .action-container {
   margin: 1em auto;
+  overflow: auto;
 }
 
 .btn {
-  background: none;
-  border: none;
-  display: inline-block;
-  cursor: pointer;
-  padding: 0.5em 1.5em;
   background: $brand-primary;
   color: $white !important;
   font-weight: $headings-font-weight;
-  border-radius: 2px;
-  outline: none;
+  border: 1px solid hsla(0,0%,100%,.2);
+  padding: 10px 28px;
+  border-radius: 0;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.4);
+  box-shadow: 0 1px 1px rgba(0,0,0,.4);
+  text-transform: uppercase;
+  display: block;
+  cursor: pointer;
   font-size: 1em;
+  float: right;
 
   &:hover {
     color: $white;
