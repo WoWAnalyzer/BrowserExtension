@@ -21,16 +21,7 @@ var extractTags = () => {
     // use report code
     code = url.match(reportRegex)[1];
     type = PARSE_TYPES.REPORT;
-  } else if (characterNameRegex.test(url)) {
-    //use character from URL
-    var match = url.match(characterNameRegex);
-    type = PARSE_TYPES.CHARACTER;
-    code = {
-      region: match[1],
-      realm: match[2],
-      name: match[3]
-    };
-  } else if (characterIdRegex.test(url)) {
+  } else if (characterIdRegex.test(url) || characterNameRegex.test(url)) {
     //use character from DOM
     var name = document.getElementById("character-name").innerText;
     var serverString = document.getElementById("server-link").innerText;
