@@ -1,46 +1,40 @@
 import ext from "./utils/ext";
 import PARSE_TYPES from './PARSE_TYPES';
 
-function toTitleCase(str) {
-  return str.replace(/\w\S*/g, function(txt){
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-  });
-}
-
 var getUrl = (code, type) => {
+  console.log("renderBookmark");
   if (type === PARSE_TYPES.REPORT) {
     return `https://wowanalyzer.com/report/${code}`;
   } else if (type === PARSE_TYPES.CHARACTER) {
-    return `https://wowanalyzer.com/character/${code.region.toUpperCase()}/${toTitleCase(code.realm)}/${toTitleCase(code.name)}/`;
+    return `https://wowanalyzer.com/character/${code.region.toUpperCase()}/${code.realm}/${code.name}/`;
   }
 }
 
-var getMessage = (code, type) => {
+var getDisplayCode = (code, type) => {
   if (type === PARSE_TYPES.REPORT) {
     return `
-      Report code is: <code>${code}</code>.
-      <br/>
-      You can navigate to WoWAnalyzer by pressing the Analyze button.
+      <code>${code}</code>
     `;
   } else if (type === PARSE_TYPES.CHARACTER) {
     return `
-      Character is: <code>${toTitleCase(decodeURIComponent(code.realm))} - ${toTitleCase(decodeURIComponent(code.name))}</code>.
-      <br/>
-      You can navigate to WoWAnalyzer by pressing the Analyze button.
+      <code>${decodeURIComponent(code.name)}<br/>${code.region.toUpperCase()} - ${decodeURIComponent(code.realm)}</code>
     `;
   }
 }
 
-var template = (data) => {
+var template = (code, type) => {
   return (`
   <div class="site-description">
-    <h3 class="title">This ${data.type === PARSE_TYPES.REPORT ? 'log' : 'character'} can be analyzed!</h3>
+    <h3 class="title">This ${type === PARSE_TYPES.REPORT ? 'log' : 'character'} can be analyzed!</h3>
     <p className="description">
-      ${getMessage(data.code, data.type)}
+      ${getDisplayCode(code, type)}
+      <span class="tip">
+        You can navigate to WoWAnalyzer by pressing the Analyze button.
+      </span>
     </p>
   </div>
   <div class="action-container">
-    <a href=${getUrl(data.code, data.type)} target="_blank" class="btn btn-primary">Analyze</a>
+    <a href=${getUrl(code, type)} target="_blank" class="btn btn-primary">Analyze</a>
   </div>
   `);
 }
@@ -51,11 +45,11 @@ var renderMessage = (message) => {
 
 var renderBookmark = (data) => {
   var displayContainer = document.getElementById("display-container")
-  if(data) {
-    var tmpl = template(data);
+  if(data.type !== PARSE_TYPES.NONE) {
+    var tmpl = template(data.code, data.type);
     displayContainer.innerHTML = tmpl;  
   } else {
-    renderMessage("Sorry, could not extract the report code.")
+    renderMessage("Sorry, couldn't find a report code or character name.")
   }
 }
 

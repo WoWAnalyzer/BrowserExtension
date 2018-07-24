@@ -1,4 +1,5 @@
 export default {
-  REPORT: 1,
-  CHARACTER: 2,
+  NONE: 1,
+  REPORT: 2,
+  CHARACTER: 3,
 };

@@ -13,7 +13,7 @@ var extractTags = () => {
   };
 
   var code = null;
-  var type = 0;
+  var type = PARSE_TYPES.NONE;
 
   url = url.replace(/\/$/, '');
 
@@ -35,10 +35,6 @@ var extractTags = () => {
       name: name
     };
   }
-
-  if (!code || type === 0) {
-    return
-  };
 
   var data = {
     url: document.location.href,
